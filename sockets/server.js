@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5003;
 let server = app.listen(PORT, () =>
   console.log(`socket microservice running ...`)
 );
 let io = require("socket.io")(server);
 let loggedinUsers = [];
+
 io.on("connection", (socket) => {
   socket.on("LoggedIn", (data) => {
     if (
@@ -40,6 +41,14 @@ io.on("connection", (socket) => {
         io.sockets.connected[gu.socketid].emit('otherGuyBusy');
       }
 
+  })
+  socket.on('cancelledcall',(data)=>{
+    let guytoCall = loggedinUsers.find(
+      (user) => user.username === data.to
+    );
+    if(guytoCall){
+      io.sockets.connected[guytoCall.socketid].emit('callcancel');
+    }
   })
   socket.on("CallUser", (data) => {
     let guytoCall = loggedinUsers.find(

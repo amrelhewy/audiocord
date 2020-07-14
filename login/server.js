@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const mysql = require("mysql");
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const cors=require('cors')
 const db_connection = mysql.createPool({
   connectionLimit: 10,
-  host: "mysqldb",
+  host: "localhost",
   user: "foo",
   password: "bar",
   database: "audiocord",
